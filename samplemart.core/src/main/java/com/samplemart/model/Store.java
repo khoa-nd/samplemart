@@ -11,6 +11,11 @@ import javax.persistence.Table;
 @Table(name = "stores")
 public class Store implements java.io.Serializable {
  
+	/**
+	 * 
+	 */	
+	private static final long serialVersionUID = -4935471294030673632L;
+	
 	private int storeId;
 	private String storeName;
 	private String storeAddress;

@@ -1,30 +1,40 @@
 package com.samplemart;
 
-import org.hibernate.Session;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.samplemart.model.Store;
-import com.samplemart.utils.HibernateUtil;
+import com.samplemart.service.StoreService;
 
 /**
  * Hello world!
- *
+ * 
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-    	System.out.println("Maven + Hibernate + Oracle");
-		Session session = HibernateUtil.getSessionFactory().openSession();
- 
-		session.beginTransaction();
+public class App {
+	public static void main(String[] args) {
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+
+		StoreService stockService = (StoreService) appContext.getBean("storeService");
+
+		/** insert **/
 		Store store = new Store();
- 
-		store.setName("Store 1");
-		store.setAddress("126A Dien Bien Phu, Q.1 - HCM city");
-		store.setPhone("08.1234.567");
-		session.save(store);
-		session.getTransaction().commit();
-		
-		System.out.println("Saved ! :)");
-    }
+		store.setName("Test");
+		store.setPhone("123456789");
+		store.setAddress("No Addr");
+		stockService.save(store);
+
+		/** select **/
+		Store store2 = stockService.findByStoreId(new Integer(1));
+		System.out.println(store2.getName());
+
+		/** update **/
+		store2.setName("New name");
+		stockService.update(store2);
+
+		/** delete **/
+		stockService.delete(store2);
+
+		System.out.println("Done");
+	}
 }
